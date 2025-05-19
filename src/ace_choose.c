@@ -24,7 +24,7 @@
 #include "constants/songs.h"
 #include "constants/rgb.h"
 
-#define ACE_MON_COUNT 5
+#define ACE_MON_COUNT 18
 
 // Position of the sprite of the selected ace Pokémon
 #define ACE_PKMN_POS_X (DISPLAY_WIDTH / 5)
@@ -95,21 +95,24 @@ static const struct WindowTemplate sWindowTemplate_AceLabel =
 
 static const u8 sPokeballCoords[ACE_MON_COUNT][2] =
     {
-        {40, 64},
-        {80, 88},
-        {120, 64},
-        {160, 88},
-        {200, 64},
-};
-
-static const u8 sAceLabelCoords[ACE_MON_COUNT][2] =
-    {
-        {0, 9},
-        {16, 10},
-        {8, 4},
-        {24, 10},
-        {32, 9},
-};
+        {16, 32},
+        {32, 64},
+        {48, 32},
+        {64, 64},
+        {80, 32},
+        {96, 64},
+        {112, 32},
+        {128, 64},
+        {144, 32},
+        {160, 64},
+        {176, 32},
+        {192, 64},
+        {16, 98},
+        {48, 98},
+        {80, 98},
+        {112, 98},
+        {144, 98},
+        {176, 98}};
 
 // single-type only, prioritizing non-evo
 static const u16 sAceMon[ACE_MON_COUNT] =
@@ -119,19 +122,19 @@ static const u16 sAceMon[ACE_MON_COUNT] =
         SPECIES_CHATOT,     // flying - dual type
         SPECIES_SEVIPER,    // poison
         SPECIES_MUDBRAY,    // ground
-                            // SPECIES_KLAWF,      // rock
-                            // SPECIES_PINSIR,     // bug
-                            // SPECIES_GIMMIGHOUL, // ghost
-                            // SPECIES_ORTHWORM,   // steel
-                            // SPECIES_HEATMOR,    // fire
-                            // SPECIES_PYUKUMUKU,  // water
-                            // SPECIES_MARACTUS,   // grass
-                            // SPECIES_PINCURCHIN, // electric
-                            // SPECIES_ELGYEM,     // psychic - evolves
-                            // SPECIES_CRYOGONAL,  // ice
-                            // SPECIES_DRUDDIGON,  // dragon
-                            // SPECIES_ABSOL,      // dark
-                            // SPECIES_COMFEY,     // fairy
+        SPECIES_KLAWF,      // rock
+        SPECIES_PINSIR,     // bug
+        SPECIES_GIMMIGHOUL, // ghost
+        SPECIES_ORTHWORM,   // steel
+        SPECIES_HEATMOR,    // fire
+        SPECIES_PYUKUMUKU,  // water
+        SPECIES_MARACTUS,   // grass
+        SPECIES_PINCURCHIN, // electric
+        SPECIES_ELGYEM,     // psychic - evolves
+        SPECIES_CRYOGONAL,  // ice
+        SPECIES_DRUDDIGON,  // dragon
+        SPECIES_ABSOL,      // dark
+        SPECIES_COMFEY,     // fairy
 };
 
 static const struct BgTemplate sBgTemplates[3] =
@@ -212,12 +215,26 @@ static const struct OamData sOam_AceCircle =
         .affineParam = 0,
 };
 
-static const u8 sCursorCoords[][2] =
+static const u8 sCursorCoords[ACE_MON_COUNT][2] =
     {
-        {60, 32},
-        {120, 56},
-        {180, 32},
-};
+        {16, 0},
+        {32, 24},
+        {48, 0},
+        {64, 24},
+        {80, 0},
+        {96, 24},
+        {112, 0},
+        {128, 24},
+        {144, 0},
+        {160, 24},
+        {176, 0},
+        {192, 24},
+        {16, 58},
+        {48, 58},
+        {80, 58},
+        {112, 58},
+        {144, 58},
+        {176, 58}};
 
 static const union AnimCmd sAnim_Hand[] =
     {
@@ -438,24 +455,20 @@ void CB2_ChooseAce(void)
     ShowBg(3);
 
     taskId = CreateTask(Task_AceChoose, 0);
-    gTasks[taskId].tAceSelection = 1;
+    gTasks[taskId].tAceSelection = 0;
 
     // Create hand sprite
     spriteId = CreateSprite(&sSpriteTemplate_Hand, 120, 56, 2);
     gSprites[spriteId].data[0] = taskId;
 
-    // Create three Poké Ball sprites
-    spriteId = CreateSprite(&sSpriteTemplate_Pokeball, sPokeballCoords[0][0], sPokeballCoords[0][1], 2);
-    gSprites[spriteId].sTaskId = taskId;
-    gSprites[spriteId].sBallId = 0;
-
-    spriteId = CreateSprite(&sSpriteTemplate_Pokeball, sPokeballCoords[1][0], sPokeballCoords[1][1], 2);
-    gSprites[spriteId].sTaskId = taskId;
-    gSprites[spriteId].sBallId = 1;
-
-    spriteId = CreateSprite(&sSpriteTemplate_Pokeball, sPokeballCoords[2][0], sPokeballCoords[2][1], 2);
-    gSprites[spriteId].sTaskId = taskId;
-    gSprites[spriteId].sBallId = 2;
+    // Create Poké Ball sprites
+    int i = 0;
+    for (i = 0; i < ACE_MON_COUNT; i++)
+    {
+        spriteId = CreateSprite(&sSpriteTemplate_Pokeball, sPokeballCoords[i][0], sPokeballCoords[i][1], 2);
+        gSprites[spriteId].sTaskId = taskId;
+        gSprites[spriteId].sBallId = i;
+    }
 
     sAceLabelWindowId = WINDOW_NONE;
 }
@@ -578,8 +591,8 @@ static void CreateAcePokemonLabel(u8 selection)
     speciesName = GetSpeciesName(species);
 
     winTemplate = sWindowTemplate_AceLabel;
-    winTemplate.tilemapLeft = sAceLabelCoords[selection][0];
-    winTemplate.tilemapTop = sAceLabelCoords[selection][1];
+    winTemplate.tilemapLeft = 16;
+    winTemplate.tilemapTop = 10;
 
     sAceLabelWindowId = AddWindow(&winTemplate);
     FillWindowPixelBuffer(sAceLabelWindowId, PIXEL_FILL(0));
@@ -593,10 +606,10 @@ static void CreateAcePokemonLabel(u8 selection)
     PutWindowTilemap(sAceLabelWindowId);
     ScheduleBgCopyTilemapToVram(0);
 
-    labelLeft = sAceLabelCoords[selection][0] * 8 - 4;
-    labelRight = (sAceLabelCoords[selection][0] + 13) * 8 + 4;
-    labelTop = sAceLabelCoords[selection][1] * 8;
-    labelBottom = (sAceLabelCoords[selection][1] + 4) * 8;
+    labelLeft = 16 * 8 - 4;
+    labelRight = (16 + 13) * 8 + 4;
+    labelTop = 10 * 8;
+    labelBottom = (10 + 4) * 8;
     SetGpuReg(REG_OFFSET_WIN0H, WIN_RANGE(labelLeft, labelRight));
     SetGpuReg(REG_OFFSET_WIN0V, WIN_RANGE(labelTop, labelBottom));
 }
