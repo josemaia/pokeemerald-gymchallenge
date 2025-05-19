@@ -1,10 +1,12 @@
 #include "global.h"
 #include "ace_choose.h"
+#include "battle_main.h"
 #include "bg.h"
 #include "data.h"
 #include "decompress.h"
 #include "event_data.h"
 #include "gpu_regs.h"
+#include "graphics.h"
 #include "international_string_util.h"
 #include "main.h"
 #include "menu.h"
@@ -583,13 +585,23 @@ static void CreateAcePokemonLabel(u8 selection)
     u8 categoryText[32];
     struct WindowTemplate winTemplate;
     const u8 *speciesName;
+    const u8 *speciesType;
+    int typeRef;
     s32 width;
     u8 labelLeft, labelRight, labelTop, labelBottom;
 
     u16 species = GetAcePokemon(selection);
     CopyMonCategoryText(species, categoryText);
     speciesName = GetSpeciesName(species);
-
+    if (species == SPECIES_CHATOT)
+    { // hack - dual type
+        typeRef = TYPE_FLYING;
+    }
+    else
+    {
+        typeRef = GetSpeciesPrimaryType(species)[0];
+    }
+    speciesType = gTypesInfo[typeRef].name;
     winTemplate = sWindowTemplate_AceLabel;
     winTemplate.tilemapLeft = 16;
     winTemplate.tilemapTop = 10;
@@ -597,11 +609,16 @@ static void CreateAcePokemonLabel(u8 selection)
     sAceLabelWindowId = AddWindow(&winTemplate);
     FillWindowPixelBuffer(sAceLabelWindowId, PIXEL_FILL(0));
 
-    width = GetStringCenterAlignXOffset(FONT_NARROW, categoryText, 0x68);
-    AddTextPrinterParameterized3(sAceLabelWindowId, FONT_NARROW, width, 1, sTextColors, 0, categoryText);
+    // TODO: re-add category text or merge with species name
+    //  width = GetStringCenterAlignXOffset(FONT_NARROW, categoryText, 0x68);
+    //  AddTextPrinterParameterized3(sAceLabelWindowId, FONT_NARROW, width, 1, sTextColors, 0, categoryText);
 
     width = GetStringCenterAlignXOffset(FONT_NORMAL, speciesName, 0x68);
-    AddTextPrinterParameterized3(sAceLabelWindowId, FONT_NORMAL, width, 17, sTextColors, 0, speciesName);
+    AddTextPrinterParameterized3(sAceLabelWindowId, FONT_NORMAL, width, 1, sTextColors, 0, speciesName);
+
+    // TODO: add type color
+    width = GetStringCenterAlignXOffset(FONT_NORMAL, speciesType, 0x68);
+    AddTextPrinterParameterized3(sAceLabelWindowId, FONT_NORMAL, width, 17, sTextColors, 0, speciesType);
 
     PutWindowTilemap(sAceLabelWindowId);
     ScheduleBgCopyTilemapToVram(0);
@@ -609,7 +626,8 @@ static void CreateAcePokemonLabel(u8 selection)
     labelLeft = 16 * 8 - 4;
     labelRight = (16 + 13) * 8 + 4;
     labelTop = 10 * 8;
-    labelBottom = (10 + 4) * 8;
+    labelBottom = 14 * 8;
+
     SetGpuReg(REG_OFFSET_WIN0H, WIN_RANGE(labelLeft, labelRight));
     SetGpuReg(REG_OFFSET_WIN0V, WIN_RANGE(labelTop, labelBottom));
 }
