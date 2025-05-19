@@ -19,8 +19,13 @@ script PetalburgCity_Gym_EventScript_InitGameState {
 	setflag(FLAG_SYS_B_DASH)
 	setflag(FLAG_RECEIVED_BIKE)
 	additem(ITEM_ACRO_BIKE)
-
-	//other noticed things
+	setflag(FLAG_BADGE01_GET)
+	setflag(FLAG_BADGE02_GET)
+	setflag(FLAG_BADGE03_GET)
+	setflag(FLAG_BADGE04_GET)
+	setflag(FLAG_BADGE05_GET)
+	setflag(FLAG_BADGE06_GET)
+	setflag(FLAG_BADGE07_GET)
 	setflag(FLAG_BADGE08_GET)
 }
 
