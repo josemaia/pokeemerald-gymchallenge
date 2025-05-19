@@ -290,6 +290,7 @@ extern const u8 gText_Birch_AreYouReady[];
 
 extern const u8 gText_BirchInTrouble[];
 extern const u8 gText_ConfirmStarterChoice[];
+extern const u8 gText_ConfirmAceChoice[];
 
 // mystery event menu text
 extern const u8 gText_EventSafelyLoaded[];
@@ -401,7 +402,7 @@ extern const u8 gText_Speed[];
 extern const u8 gText_Dash[];
 extern const u8 gText_Plus[];
 
-//Pokédex text
+// Pokédex text
 extern const u8 gText_CryOf[];
 extern const u8 gText_SizeComparedTo[];
 extern const u8 gText_PokedexRegistration[];
@@ -2416,7 +2417,7 @@ extern const u8 gText_PlayerScurriedToCenter[];
 extern const u8 gText_PlayerScurriedBackHome[];
 
 extern const u8 gText_Relearn[]; // move relearner from summary screen
-extern const u8 gText_Rename[]; // change nickname from summary screen
+extern const u8 gText_Rename[];  // change nickname from summary screen
 
 // Switch Caught Mon into Party
 extern const u8 gText_CannotSendMonToBoxHM[];

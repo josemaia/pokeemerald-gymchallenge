@@ -20,11 +20,11 @@ typedef union PACKED TrainerBattleParameter
 {
     struct PACKED _TrainerBattleParameter
     {
-        u8 isDoubleBattle:1;
-        u8 isRematch:1;
-        u8 playMusicA:1;
-        u8 playMusicB:1;
-        u8 mode:4;
+        u8 isDoubleBattle : 1;
+        u8 isRematch : 1;
+        u8 playMusicA : 1;
+        u8 playMusicB : 1;
+        u8 mode : 4;
         u8 objEventLocalIdA;
         u16 opponentA;
         u8 *introTextA;
@@ -40,7 +40,6 @@ typedef union PACKED TrainerBattleParameter
     } params;
     u8 data[sizeof(struct _TrainerBattleParameter)];
 } TrainerBattleParameter;
-
 
 extern const struct RematchTrainer gRematchTable[REMATCH_TABLE_ENTRIES];
 
@@ -65,6 +64,7 @@ u8 GetWildBattleTransition(void);
 u8 GetTrainerBattleTransition(void);
 u8 GetSpecialBattleTransition(s32 id);
 void ChooseStarter(void);
+void ChooseAce(void);
 void ResetTrainerOpponentIds(void);
 void SetMapVarsToTrainerA(void);
 void SetMapVarsToTrainerB(void);
