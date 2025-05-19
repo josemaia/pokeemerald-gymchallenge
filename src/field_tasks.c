@@ -57,16 +57,15 @@ static void CrackedFloorPerStepCallback(u8);
 static void Task_MuddySlope(u8);
 
 static const TaskFunc sPerStepCallbacks[] =
-{
-    [STEP_CB_DUMMY]             = DummyPerStepCallback,
-    [STEP_CB_ASH]               = AshGrassPerStepCallback,
-    [STEP_CB_FORTREE_BRIDGE]    = FortreeBridgePerStepCallback,
-    [STEP_CB_PACIFIDLOG_BRIDGE] = PacifidlogBridgePerStepCallback,
-    [STEP_CB_SOOTOPOLIS_ICE]    = SootopolisGymIcePerStepCallback,
-    [STEP_CB_TRUCK]             = EndTruckSequence,
-    [STEP_CB_SECRET_BASE]       = SecretBasePerStepCallback,
-    [STEP_CB_CRACKED_FLOOR]     = CrackedFloorPerStepCallback
-};
+    {
+        [STEP_CB_DUMMY] = DummyPerStepCallback,
+        [STEP_CB_ASH] = AshGrassPerStepCallback,
+        [STEP_CB_FORTREE_BRIDGE] = FortreeBridgePerStepCallback,
+        [STEP_CB_PACIFIDLOG_BRIDGE] = PacifidlogBridgePerStepCallback,
+        [STEP_CB_SOOTOPOLIS_ICE] = SootopolisGymIcePerStepCallback,
+        //[STEP_CB_TRUCK]             = EndTruckSequence,
+        [STEP_CB_SECRET_BASE] = SecretBasePerStepCallback,
+        [STEP_CB_CRACKED_FLOOR] = CrackedFloorPerStepCallback};
 
 // Each array has 4 pairs of data, each pair representing two metatiles of a log and their relative position.
 // The 4 pairs are for:
@@ -76,62 +75,49 @@ static const TaskFunc sPerStepCallbacks[] =
 // 3: If the player is standing on the right of a horizontal log
 // i.e. the element with an offset of 0,0 is the one the player is standing on.
 static const struct PacifidlogMetatileOffsets sHalfSubmergedBridgeMetatileOffsets[] =
-{
-    { 0,  0, METATILE_Pacifidlog_HalfSubmergedLogs_VerticalTop}, {0, 1, METATILE_Pacifidlog_HalfSubmergedLogs_VerticalBottom},
-    { 0, -1, METATILE_Pacifidlog_HalfSubmergedLogs_VerticalTop}, {0, 0, METATILE_Pacifidlog_HalfSubmergedLogs_VerticalBottom},
-    { 0,  0, METATILE_Pacifidlog_HalfSubmergedLogs_HorizontalLeft}, {1, 0, METATILE_Pacifidlog_HalfSubmergedLogs_HorizontalRight},
-    {-1,  0, METATILE_Pacifidlog_HalfSubmergedLogs_HorizontalLeft}, {0, 0, METATILE_Pacifidlog_HalfSubmergedLogs_HorizontalRight}
-};
+    {
+        {0, 0, METATILE_Pacifidlog_HalfSubmergedLogs_VerticalTop}, {0, 1, METATILE_Pacifidlog_HalfSubmergedLogs_VerticalBottom}, {0, -1, METATILE_Pacifidlog_HalfSubmergedLogs_VerticalTop}, {0, 0, METATILE_Pacifidlog_HalfSubmergedLogs_VerticalBottom}, {0, 0, METATILE_Pacifidlog_HalfSubmergedLogs_HorizontalLeft}, {1, 0, METATILE_Pacifidlog_HalfSubmergedLogs_HorizontalRight}, {-1, 0, METATILE_Pacifidlog_HalfSubmergedLogs_HorizontalLeft}, {0, 0, METATILE_Pacifidlog_HalfSubmergedLogs_HorizontalRight}};
 
 static const struct PacifidlogMetatileOffsets sFullySubmergedBridgeMetatileOffsets[] =
-{
-    { 0,  0, METATILE_Pacifidlog_SubmergedLogs_VerticalTop}, {0, 1, METATILE_Pacifidlog_SubmergedLogs_VerticalBottom},
-    { 0, -1, METATILE_Pacifidlog_SubmergedLogs_VerticalTop}, {0, 0, METATILE_Pacifidlog_SubmergedLogs_VerticalBottom},
-    { 0,  0, METATILE_Pacifidlog_SubmergedLogs_HorizontalLeft}, {1, 0, METATILE_Pacifidlog_SubmergedLogs_HorizontalRight},
-    {-1,  0, METATILE_Pacifidlog_SubmergedLogs_HorizontalLeft}, {0, 0, METATILE_Pacifidlog_SubmergedLogs_HorizontalRight}
-};
+    {
+        {0, 0, METATILE_Pacifidlog_SubmergedLogs_VerticalTop}, {0, 1, METATILE_Pacifidlog_SubmergedLogs_VerticalBottom}, {0, -1, METATILE_Pacifidlog_SubmergedLogs_VerticalTop}, {0, 0, METATILE_Pacifidlog_SubmergedLogs_VerticalBottom}, {0, 0, METATILE_Pacifidlog_SubmergedLogs_HorizontalLeft}, {1, 0, METATILE_Pacifidlog_SubmergedLogs_HorizontalRight}, {-1, 0, METATILE_Pacifidlog_SubmergedLogs_HorizontalLeft}, {0, 0, METATILE_Pacifidlog_SubmergedLogs_HorizontalRight}};
 
 static const struct PacifidlogMetatileOffsets sFloatingBridgeMetatileOffsets[] =
-{
-    { 0,  0, METATILE_Pacifidlog_FloatingLogs_VerticalTop}, {0, 1, METATILE_Pacifidlog_FloatingLogs_VerticalBottom},
-    { 0, -1, METATILE_Pacifidlog_FloatingLogs_VerticalTop}, {0, 0, METATILE_Pacifidlog_FloatingLogs_VerticalBottom},
-    { 0,  0, METATILE_Pacifidlog_FloatingLogs_HorizontalLeft}, {1, 0, METATILE_Pacifidlog_FloatingLogs_HorizontalRight},
-    {-1,  0, METATILE_Pacifidlog_FloatingLogs_HorizontalLeft}, {0, 0, METATILE_Pacifidlog_FloatingLogs_HorizontalRight}
-};
+    {
+        {0, 0, METATILE_Pacifidlog_FloatingLogs_VerticalTop}, {0, 1, METATILE_Pacifidlog_FloatingLogs_VerticalBottom}, {0, -1, METATILE_Pacifidlog_FloatingLogs_VerticalTop}, {0, 0, METATILE_Pacifidlog_FloatingLogs_VerticalBottom}, {0, 0, METATILE_Pacifidlog_FloatingLogs_HorizontalLeft}, {1, 0, METATILE_Pacifidlog_FloatingLogs_HorizontalRight}, {-1, 0, METATILE_Pacifidlog_FloatingLogs_HorizontalLeft}, {0, 0, METATILE_Pacifidlog_FloatingLogs_HorizontalRight}};
 
 // Each element corresponds to a y coordinate row in the sootopolis gym 1F map.
 // The rows with ice each have a temp var used to track the ice steps. Each bit in the var
 // represents whether ice at that x coordinate (starting from the left edge) has been visited.
 // This method of tracking steps will break if the ice puzzle is more than 16 map spaces wide.
 static const u16 sSootopolisGymIceRowVars[] =
-{
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    VAR_TEMP_1,
-    VAR_TEMP_2,
-    VAR_TEMP_3,
-    VAR_TEMP_4,
-    0,
-    0,
-    VAR_TEMP_5,
-    VAR_TEMP_6,
-    VAR_TEMP_7,
-    0,
-    0,
-    VAR_TEMP_8,
-    VAR_TEMP_9,
-    VAR_TEMP_A,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0
-};
+    {
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        VAR_TEMP_1,
+        VAR_TEMP_2,
+        VAR_TEMP_3,
+        VAR_TEMP_4,
+        0,
+        0,
+        VAR_TEMP_5,
+        VAR_TEMP_6,
+        VAR_TEMP_7,
+        0,
+        0,
+        VAR_TEMP_8,
+        VAR_TEMP_9,
+        VAR_TEMP_A,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0};
 
 #define tCallbackId data[0]
 
@@ -141,7 +127,7 @@ static void Task_RunPerStepCallback(u8 taskId)
     sPerStepCallbacks[idx](taskId);
 }
 
-#define tState           data[0]
+#define tState data[0]
 #define tAmbientCryState data[1]
 #define tAmbientCryDelay data[2]
 
@@ -172,7 +158,7 @@ static void Task_RunTimeBasedEvents(u8 taskId)
     if (!ArePlayerFieldControlsLocked())
     {
         RunTimeBasedEvents(data);
-        UpdateAmbientCry(&tAmbientCryState, (u16*) &tAmbientCryDelay);
+        UpdateAmbientCry(&tAmbientCryState, (u16 *)&tAmbientCryDelay);
     }
 }
 
@@ -234,7 +220,6 @@ void ResetFieldTasksArgs(void)
 
 static void DummyPerStepCallback(u8 taskId)
 {
-
 }
 
 static const struct PacifidlogMetatileOffsets *GetPacifidlogBridgeMetatileOffsets(const struct PacifidlogMetatileOffsets *offsets, u16 metatileBehavior)
@@ -356,12 +341,12 @@ static bool32 ShouldSinkPacifidlogLogs(s16 newX, s16 newY, s16 oldX, s16 oldY)
     return TRUE;
 }
 
-#define tState    data[1]
-#define tPrevX    data[2]
-#define tPrevY    data[3]
+#define tState data[1]
+#define tPrevX data[2]
+#define tPrevY data[3]
 #define tToRaiseX data[4]
 #define tToRaiseY data[5]
-#define tDelay    data[6]
+#define tDelay data[6]
 
 static void PacifidlogBridgePerStepCallback(u8 taskId)
 {
@@ -480,9 +465,9 @@ static void TryRaiseFortreeBridge(s16 x, s16 y)
     }
 }
 
-#define tState      data[1]
-#define tPrevX      data[2]
-#define tPrevY      data[3]
+#define tState data[1]
+#define tPrevX data[2]
+#define tPrevY data[3]
 #define tOldBridgeX data[4]
 #define tOldBridgeY data[5]
 #define tBounceTime data[6]
@@ -533,11 +518,11 @@ static void FortreeBridgePerStepCallback(u8 taskId)
 
         // Because this doesn't check for isFortreeBridgeCur, bridge sections aren't
         // lowered when first stepping onto them from anything other than another bridge.
-    #ifdef BUGFIX
+#ifdef BUGFIX
         if (isFortreeBridgePrev || isFortreeBridgeCur)
-    #else
+#else
         if (isFortreeBridgePrev)
-    #endif
+#endif
         {
             // Raise old bridge
             TryRaiseFortreeBridge(prevX, prevY);
@@ -602,14 +587,12 @@ static void FortreeBridgePerStepCallback(u8 taskId)
 #define ICE_PUZZLE_T 6
 #define ICE_PUZZLE_B 19
 
-#define ICE_PUZZLE_WIDTH  (ICE_PUZZLE_R - ICE_PUZZLE_L + 1)
+#define ICE_PUZZLE_WIDTH (ICE_PUZZLE_R - ICE_PUZZLE_L + 1)
 #define ICE_PUZZLE_HEIGHT (ICE_PUZZLE_B - ICE_PUZZLE_T + 1)
 
 static bool32 CoordInIcePuzzleRegion(s16 x, s16 y)
 {
-    if ((u16)(x - ICE_PUZZLE_L) < ICE_PUZZLE_WIDTH
-     && (u16)(y - ICE_PUZZLE_T) < ICE_PUZZLE_HEIGHT
-     && sSootopolisGymIceRowVars[y])
+    if ((u16)(x - ICE_PUZZLE_L) < ICE_PUZZLE_WIDTH && (u16)(y - ICE_PUZZLE_T) < ICE_PUZZLE_HEIGHT && sSootopolisGymIceRowVars[y])
         return TRUE;
     else
         return FALSE;
@@ -652,8 +635,8 @@ void SetSootopolisGymCrackedIceMetatiles(void)
 #define tState data[1]
 #define tPrevX data[2]
 #define tPrevY data[3]
-#define tIceX  data[4]
-#define tIceY  data[5]
+#define tIceX data[4]
+#define tIceY data[5]
 #define tDelay data[6]
 
 static void SootopolisGymIcePerStepCallback(u8 taskId)
@@ -789,14 +772,14 @@ static void SetCrackedFloorHoleMetatile(s16 x, s16 y)
     CurrentMapDrawMetatileAt(x, y);
 }
 
-#define tPrevX       data[2]
-#define tPrevY       data[3]
+#define tPrevX data[2]
+#define tPrevY data[3]
 #define tFloor1Delay data[4]
-#define tFloor1X     data[5]
-#define tFloor1Y     data[6]
+#define tFloor1X data[5]
+#define tFloor1Y data[6]
 #define tFloor2Delay data[7]
-#define tFloor2X     data[8]
-#define tFloor2Y     data[9]
+#define tFloor2X data[8]
+#define tFloor2Y data[9]
 
 static void CrackedFloorPerStepCallback(u8 taskId)
 {
@@ -858,8 +841,9 @@ static void CrackedFloorPerStepCallback(u8 taskId)
 // They're divided into groups of 3, i.e data[4]-[6] track one metatile, data[7]-[9] another, and so on.
 // For each data triplet, the 1sst is the animation time, and the 2nd/3rd are the x/y coordinates.
 #define SLOPE_DATA_START 4
-#define SLOPE_DATA_END  (3 * SLOPE_DATA_SIZE + SLOPE_DATA_START) // 13, which is the last slope data start point
-enum {
+#define SLOPE_DATA_END (3 * SLOPE_DATA_SIZE + SLOPE_DATA_START) // 13, which is the last slope data start point
+enum
+{
     SLOPE_TIME,
     SLOPE_X,
     SLOPE_Y,
@@ -871,8 +855,7 @@ static const u16 sMuddySlopeMetatiles[] = {
     METATILE_General_MuddySlope_Frame0,
     METATILE_General_MuddySlope_Frame3,
     METATILE_General_MuddySlope_Frame2,
-    METATILE_General_MuddySlope_Frame1
-};
+    METATILE_General_MuddySlope_Frame1};
 
 #define SLOPE_ANIM_TIME 32
 #define SLOPE_ANIM_STEP_TIME (SLOPE_ANIM_TIME / (int)ARRAY_COUNT(sMuddySlopeMetatiles))
